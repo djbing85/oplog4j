@@ -16,7 +16,7 @@
 
 诸如此类的审核操作日志的需要, 是广泛存在的
 
-![Record-lifeCycle](imgs\1599011251766.png)
+![Record-lifeCycle](https://github.com/djbing85/oplog4j/blob/master/imgs/1599011251766.png)
 
 一个典型的记录摘要包含如下要素:
 
@@ -112,11 +112,11 @@ Don't reinvent the wheel.
 
 一个常规的MVC后台通常由Controller, Service和Dao三层构成, 一些使用微服务的系统还会把Controller和Service层放在不同的JVM中运行, 但总体上看还是MVC结构的:
 
-![1599013482428](imgs\1599013482428.png)
+![1599013482428](https://github.com/djbing85/oplog4j/blob/master/imgs/1599013482428.png)
 
 如果你的项目的代码遵循了这样的结构, 就可以很方便地使用OpLog4j来实现操作日志的功能
 
-![1599013947158](imgs\1599013947158.png)
+![1599013947158](https://github.com/djbing85/oplog4j/blob/master/imgs/1599013947158.png)
 
 OpLog4j通过AOP拦截器的before和after方法实现生成操作日志的功能
 
@@ -826,4 +826,4 @@ total.price=Total Price
 
 本工具尚在完善中, 欢迎试用及提BUG. 
 
-如果这个工具帮助到了你, 
+如果这个工具帮助到了你, 请帮忙推荐给你的朋友!
