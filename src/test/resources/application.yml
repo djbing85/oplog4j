@@ -1,0 +1,4 @@
+spring:
+  messages:
+      #relative path, DO NOT start with /
+    basename: i18n/messages/messages

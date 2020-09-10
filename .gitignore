@@ -1,0 +1,10 @@
+*.diff
+.idea
+target/
+**/coverage-report/
+**/test-output
+**.project
+*.settings/
+*.classpath
+*.iml
+.pydevproject
