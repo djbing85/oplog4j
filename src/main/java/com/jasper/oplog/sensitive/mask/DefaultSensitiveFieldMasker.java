@@ -139,10 +139,4 @@ public class DefaultSensitiveFieldMasker<BO> implements ISensitiveFieldMasker<BO
         return val;
     }
 
-    @Override
-    public Class<BO> getModelClass() {
-        //default masker would cater all BO that could not find it's corresponding masker
-        return null;
-    }
-
 }

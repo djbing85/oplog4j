@@ -24,11 +24,11 @@
        <ref bean="userOpLogHandler" />
     </util:list>
     
-    <bean id="defaultOpAOPInterceptor" class="com.jasper.oplog.aop.DefaultOpLogAOPInterceptor">
+    <bean id="defaultOpLogAOPInterceptor" class="com.jasper.oplog.aop.DefaultOpLogAOPInterceptor">
         <property name="handlers" ref="opLogHandlers" />
     </bean>
     
-<!--     <bean id="jsonDiffOpAOPInterceptor" class="com.jasper.oplog.aop.JsonDiffOpLogAOPInterceptor"> -->
+<!--     <bean id="jsonDiffOpLogAOPInterceptor" class="com.jasper.oplog.aop.JsonDiffOpLogAOPInterceptor"> -->
 <!--         <property name="handlers" ref="opLogHandlers" /> -->
 <!--     </bean> -->
 

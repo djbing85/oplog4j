@@ -4,7 +4,7 @@
 
 # 背景
 
-相信很多的项目都会有需要记录用户操作记录的需求, 特别是一些银行与政府的项目, 要把一条记录从生成到消亡中间所有变更都记录下来, 以备审查需要.
+相信很多的项目都会有需要记录用户操作记录的需求, 特别是一些银行与政府的项目. 要把一条记录从生成到消亡中间所有变更都记录下来, 以备审查需要.
 
 | 操作类型 | 典型的操作内容 |
 | -------- | -------------- |
@@ -127,7 +127,7 @@ OpLog4j通过AOP拦截器的before和after方法实现生成操作日志的功�
 | 配置项目              | 说明                                                         | 类                                                           |
 | --------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | Bean注释              | 标记BO Model bean的属性名称, 转换规则等等                    | [OpLogModel](#OpLogModel), [OpLogField](#OpLogModel)         |
-| Service/Dao的切入方法 | 配置产生日志的方法, 该方法通常变更了对应B的数据              | [OpLogJoinPoint](#OpLogJoinPoint), [OpLogParam](#OpLogParam), [OpLogID](#OpLogID) |
+| Service/Dao的切入方法 | 配置产生日志的方法, 该方法通常变更了对应BO的数据             | [OpLogJoinPoint](#OpLogJoinPoint), [OpLogParam](#OpLogParam), [OpLogID](#OpLogID) |
 | Spring配置            | 支持[xml方式](#xml方式)和[springboot方式](#springboot方式)配置; 如果是xml, 仅需要最少8行配置代码 | 参考[Spring配置](#Spring配置)配置                            |
 | Handler类             | 方法执行完毕后, 日志如果需要写入DB, 则需要在这里实现         | 实现对应BO Model bean的[IOpLogHandler接口](#IOpLogHandler接口) |
 
@@ -351,7 +351,7 @@ public class UserBO {
 
 ```
 	1. OpLogJoinPoint.modelClass配置的类, 通常与OpLogID搭配使用
-	2. OpLogJoinPoint.useReturnValue == true时尝试使用方法返回对象的class
+	2. OpLogJoinPoint.useReturnValue = true时尝试使用方法返回对象的class
 	3. OpLogParam注释参数的class
 	4. 参数中第一个类型是被OpLogModel注释类的class
 ```
@@ -379,7 +379,7 @@ public class UserBO {
     <bean id="defaultOpAOPInterceptor" class="com.jasper.oplog.aop.DefaultOpLogAOPInterceptor">
         <property name="handlers" ref="opLogHandlers" />
     </bean>
-    <!-- JSON格式的操作日志处理类.和defaultOpAOPInterceptor只需要其中一个即可 -->
+    <!-- JSON格式的操作日志处理类. -->
     <!-- <bean id="jsonDiffOpAOPInterceptor" class="com.jasper.oplog.aop.JsonDiffOpLogAOPInterceptor">
         <property name="handlers" ref="opLogHandlers" />
     </bean> -->
@@ -432,7 +432,7 @@ public class UserBO {
         return defaultOpAOPInterceptor;
     }
 
-	//json格式的操作日志拦截器, 与DefaultOpLogAOPInterceptor只需要配置其中一个即可
+	//json格式的操作日志拦截器
     //@Bean
     //public JsonDiffOpLogAOPInterceptor jsonDiffOpAOPInterceptor() {
     //    JsonDiffOpLogAOPInterceptor jsonDiffOpAOPInterceptor = new JsonDiffOpLogAOPInterceptor();
@@ -640,7 +640,7 @@ public class OrderChangeService {
     }
 
     //按orderId返回OrderChange, 用于生成操作日志时加载pre-BO与post-BO
-    public OrderChange orderDetail(Long orderId返回) {
+    public OrderChange orderDetail(Long orderId) {
         UserOrder order = orderDao.getById(orderId);
         Coupon coupon = couponDao.getById(order.getCouponId());
         Commodity commodity = commodityDao.getById(order.getCommodityId());
@@ -698,9 +698,9 @@ modelClass: class com.jasper.oplog.test.springboot.model.OrderChange
 
 
 
-## list属性
+## Collection属性
 
-当前版本的OpLog4j尚不支持list属性的变更, 有这部分需求的开发者需要自行比较pre/post中的list对象, 参考[IOpLogHandler接口](#IOpLogHandler接口)
+当前版本的OpLog4j尚不支持Collection属性的变更, 有这部分需求的开发者需要自行比较pre/post中的list对象, 参考[IOpLogHandler接口](#IOpLogHandler接口)
 
 
 
@@ -816,9 +816,23 @@ total.price=Total Price
 {"fieldName":"Coupon","subModelDiffList":[{"fieldName":"折扣","from":"\"20.00%\"","to":"\"6.67%\""}]}
 ```
 
-
-
 前端再根据需求显示即可.
+
+
+
+# 排期功能
+
+
+
+## Difference between Collection fields
+
+
+
+## @Repeatable feature on OpLogJoinPoint
+
+
+
+## Composite primary key
 
 
 

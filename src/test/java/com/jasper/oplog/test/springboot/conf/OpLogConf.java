@@ -51,14 +51,14 @@ public class OpLogConf {
     }
     
 //    @Bean
-//    public DefaultOpLogAOPInterceptor defaultOpAOPInterceptor() {
+//    public DefaultOpLogAOPInterceptor defaultOpLogAOPInterceptor() {
 //        DefaultOpLogAOPInterceptor defaultOpAOPInterceptor = new DefaultOpLogAOPInterceptor();
 //        defaultOpAOPInterceptor.setHandlers(opLogHandlerList());
 //        return defaultOpAOPInterceptor;
 //    }
     
     @Bean
-    public JsonDiffOpLogAOPInterceptor jsonDiffOpAOPInterceptor() {
+    public JsonDiffOpLogAOPInterceptor jsonDiffOpLogAOPInterceptor() {
         JsonDiffOpLogAOPInterceptor jsonDiffOpAOPInterceptor = new JsonDiffOpLogAOPInterceptor();
         jsonDiffOpAOPInterceptor.setHandlers(opLogHandlerList());
         return jsonDiffOpAOPInterceptor;

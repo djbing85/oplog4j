@@ -27,9 +27,4 @@ public interface ISensitiveFieldMasker<BO> {
      */
     Object maskSensitiveValue(Class<BO> modelClass, Object value, OpLogSensitiveTypeEnum sensitiveTypeEnum);
 
-    /**
-     * each BO should have it's corresponding class register here
-     * @return
-     */
-    Class<BO> getModelClass();
 }

@@ -25,7 +25,7 @@ public class OpLog4jMessageUtils {
        }
    }
 
-   /** map the fieldName by current locale */
+   /** map the value by current locale, check source code of DiffModel for more detail */
    public static void i18nFieldName(DiffModel dm) {
        if(dm == null || StringUtils.isEmpty(dm.getFieldName())) {
            return;

@@ -87,8 +87,6 @@ public abstract class AbstractOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>
 
     protected Multimap<String, IOpLogHandler<BO>> handlersMap = ArrayListMultimap.create();
 
-    protected Map<String, ISensitiveFieldMasker<BO>> sensitiveFieldhandlersMap = new HashMap<String, ISensitiveFieldMasker<BO>>();
-
     protected ISensitiveFieldMasker<BO> defaultSensitiveFieldHandler = new DefaultSensitiveFieldMasker<BO>();
 
     protected static DateFormat opTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -400,12 +398,7 @@ public abstract class AbstractOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>
             Object value,
             Field field) {
         try {
-            ISensitiveFieldMasker<BO> sensitiveFieldHandler = sensitiveFieldhandlersMap.get(modelClass.getName());
-            if(sensitiveFieldHandler != null) {
-                value = sensitiveFieldHandler.maskSensitiveValue(modelClass, value, sensitiveTypeEnum);
-            } else {
-                value = defaultSensitiveFieldHandler.maskSensitiveValue(modelClass, value, sensitiveTypeEnum);
-            }
+            value = defaultSensitiveFieldHandler.maskSensitiveValue(modelClass, value, sensitiveTypeEnum);
         } catch (Exception e) {
             LOG.warn("failed to mask sensitive field: " + field.getName() + 
                     " of class: " + modelClass.getName() + ", error: " + e.getMessage(), e);
@@ -448,10 +441,6 @@ public abstract class AbstractOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>
             Class<BO> modelClass, Object pre, Object post)
                     throws OpLogException;
     
-    public void setSensitiveFieldhandlersMap(Map<String, ISensitiveFieldMasker<BO>> sensitiveFieldhandlersMap) {
-        this.sensitiveFieldhandlersMap = sensitiveFieldhandlersMap;
-    }
-
     public void setHandlers(List<IOpLogHandler<BO>> handlers) {
         if(handlersMap == null || handlersMap.size() == 0) {
             for(IOpLogHandler<BO> h: handlers) {
