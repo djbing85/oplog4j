@@ -1,6 +1,6 @@
 # OpLog4j
 
-[中文版](#<https://github.com/djbing85/oplog4j/blob/master/README_zh_CN.md>)
+[中文版](#https://github.com/djbing85/oplog4j/blob/master/README_zh_CN.md)
 
 This document introduce a common tool to generate Operation Log base on Spring: OpLog4j
 
