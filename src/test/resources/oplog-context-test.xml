@@ -14,21 +14,21 @@
 
 	<context:annotation-config />
 
-	<context:component-scan base-package="com.jasper.oplog.test.xml" />
+	<context:component-scan base-package="com.github.djbing85.test.xml" />
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     
-    <bean id="userOpLogHandler" class="com.jasper.oplog.test.xml.aop.handler.UserOpLogHandler"/>
+    <bean id="userOpLogHandler" class="com.github.djbing85.test.xml.aop.handler.UserOpLogHandler"/>
     
     <util:list id="opLogHandlers">
        <ref bean="userOpLogHandler" />
     </util:list>
     
-    <bean id="defaultOpLogAOPInterceptor" class="com.jasper.oplog.aop.DefaultOpLogAOPInterceptor">
+    <bean id="defaultOpLogAOPInterceptor" class="com.github.djbing85.aop.DefaultOpLogAOPInterceptor">
         <property name="handlers" ref="opLogHandlers" />
     </bean>
     
-<!--     <bean id="jsonDiffOpLogAOPInterceptor" class="com.jasper.oplog.aop.JsonDiffOpLogAOPInterceptor"> -->
+<!--     <bean id="jsonDiffOpLogAOPInterceptor" class="com.github.djbing85.aop.JsonDiffOpLogAOPInterceptor"> -->
 <!--         <property name="handlers" ref="opLogHandlers" /> -->
 <!--     </bean> -->
 

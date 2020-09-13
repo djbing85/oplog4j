@@ -8,25 +8,33 @@
         <version>2.1.5.RELEASE</version>
     </parent>
     
-	<groupId>com.jasper.oplog</groupId>
+	<groupId>com.github.djbing85</groupId>
 	<artifactId>oplog4j</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<description>a common oplog generator intergrated with spring</description>
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+	<url>https://github.com/djbing85/oplog4j</url>
+    
+    <scm>
+        <connection>scm:git:git@github.com:djbing85/oplog4j</connection>
+        <developerConnection>scm:git:git@github.com:djbing85/oplog4j</developerConnection>
+        <url>scm:git:git@github.com:djbing85/oplog4j</url>
+    </scm>
+    
+    <developers>
+        <developer>
+            <name>Jasper</name>
+            <email>djbing85@gmail.com</email>
+            <organization>github</organization>
+            <organizationUrl>https://djbing85.github.io/</organizationUrl>
+        </developer>
+    </developers>
 	
 	<properties>
+        <jdk.version>1.8</jdk.version>
         <spring.version>5.1.7.RELEASE</spring.version>
         <springboot.version>2.2.5.RELEASE</springboot.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
 
 	<dependencies>
@@ -167,4 +175,112 @@
             <scope>test</scope>
         </dependency>
 	</dependencies>
+    
+    <build>
+        <finalName>oplog4j</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+<!--                 <configuration>
+			        <additionalparam>-Xdoclint:none</additionalparam>
+			        <encoding>${project.build.sourceEncoding}</encoding>
+			        <outputDirectory>${basedir}</outputDirectory>
+			        <reportOutputDirectory>${basedir}</reportOutputDirectory>
+			    </configuration> -->
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>nexus-release</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--自动发布 Jar 到 Maven 仓库-->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.8</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>nexus-release</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <!--测试覆盖率统计工具插件-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <formats>
+                        <format>html</format>
+                        <format>xml</format>
+                    </formats>
+                    <check/>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    
+	<profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- GPG -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>nexus-release</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>nexus-release</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>nexus-release</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
 </project>

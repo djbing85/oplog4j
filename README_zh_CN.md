@@ -51,7 +51,7 @@
 
 
 ```
-//以下内容是基于一个单元测试中, com.jasper.oplog.model.DefaultOpLog的真实输出
+//以下内容是基于一个单元测试中, com.github.djbing85.model.DefaultOpLog的真实输出
 summary: update user info	//操作项名称, 这里是更新用户信息
 
 operator: system admin		//这里记录了操作人, 如果你的操作人是一个ID, 也可以在想要的地方进行转换
@@ -64,7 +64,7 @@ pre: {"auditStatus":0,"balance":815146771322186439.15165284906241427442807889747
 post: {"auditStatus":1,"balance":5825067578147956587.33458620514737635875945898078498430550098419189453125,"classifyMsg":"top secret: 677b5c9d-b7f5-4ef3-9f67-d8b37391cbad","createTime":1599493177359,"ignoreField":"invisible.9a1c12c3-6ea9-4249-9176-9f13ddd464e9","phone":"911","pswd":"The quick brown fox jumps over the lazy dog","status":1,"type":"p","userId":1,"userName":"jasper.d.1454e20f-3f34-46d5-8c4e-cb20442348f8"}
 
 
-//变更详情, 变更详情的内容是在com.jasper.oplog.aop.DefaultOpLogAOPInterceptor.getModelDiff(Class<BO>, Object, Object)中生成的, 可以通过继承类的方式定制自己想要的变更详情样式.
+//变更详情, 变更详情的内容是在com.github.djbing85.aop.DefaultOpLogAOPInterceptor.getModelDiff(Class<BO>, Object, Object)中生成的, 可以通过继承类的方式定制自己想要的变更详情样式.
 diff: 
 	//<变更项目名称> <变更前的值> --> <变更后的值>
 	User Name: jasper.d.6b25870e-bf31-448d-a3e2-8c19a87b915e --> jasper.d.7ea08e0e-0409-4da1-b283-e04de87a93d8
@@ -82,7 +82,7 @@ opTime: Tue Sep 08 11:05:01 CST 2020
 opType: UPDATE
 
 //BO类
-modelClass: class com.jasper.oplog.test.xml.model.UserBO
+modelClass: class com.github.djbing85.test.xml.model.UserBO
 ```
 
 上面这样详细的操作变更详情, 应该就可以满足大部分对于操作日志的需求了.
@@ -172,8 +172,8 @@ Bean 注释的类是OpLogModel与OpLogField, 分别作用于类与属性上.
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.jasper.oplog.annotation.OpLogField;
-import com.jasper.oplog.annotation.OpLogModel;
+import com.github.djbing85.annotation.OpLogField;
+import com.github.djbing85.annotation.OpLogModel;
 
 //BO类注释, 注意代码中一定要有对应的com.xxx.dao.UserBODao.getById(Long id)方法
 @OpLogModel(daoBeanId = "userBODao", method = "getById")
@@ -374,17 +374,17 @@ public class UserBO {
     <!-- aop config -->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
     <!-- 输出操作日志的handler, 需要实现IOpLogHandler接口 -->
-    <bean id="userOpLogHandler" class="com.jasper.oplog.test.xml.aop.handler.UserOpLogHandler"/>
+    <bean id="userOpLogHandler" class="com.github.djbing85.test.xml.aop.handler.UserOpLogHandler"/>
     <!-- handler列表, 可以有多个 -->
     <util:list id="opLogHandlers">
        <ref bean="userOpLogHandler" />
     </util:list>
     <!-- 默认操作日志处理类. 有需要修改操作日志的diff输出时, 可以继承AbstractOpLogAOPInterceptor, 实现自己想要的输出格式 -->
-    <bean id="defaultOpAOPInterceptor" class="com.jasper.oplog.aop.DefaultOpLogAOPInterceptor">
+    <bean id="defaultOpAOPInterceptor" class="com.github.djbing85.aop.DefaultOpLogAOPInterceptor">
         <property name="handlers" ref="opLogHandlers" />
     </bean>
     <!-- JSON格式的操作日志处理类. -->
-    <!-- <bean id="jsonDiffOpAOPInterceptor" class="com.jasper.oplog.aop.JsonDiffOpLogAOPInterceptor">
+    <!-- <bean id="jsonDiffOpAOPInterceptor" class="com.github.djbing85.aop.JsonDiffOpLogAOPInterceptor">
         <property name="handlers" ref="opLogHandlers" />
     </bean> -->
 ```
@@ -452,9 +452,9 @@ public class UserBO {
 IOpLogHandler是输出操作日志的地方, 通常可以在这里对操作日志做进一步的加工, 然后保存到DB中
 
 ```java
-import com.jasper.oplog.aop.handler.IOpLogHandler;
-import com.jasper.oplog.model.DefaultOpLog;
-import com.jasper.oplog.test.springboot.model.UserOrder;
+import com.github.djbing85.aop.handler.IOpLogHandler;
+import com.github.djbing85.model.DefaultOpLog;
+import com.github.djbing85.test.springboot.model.UserOrder;
 
 public class OrderOpLogHandler implements IOpLogHandler<UserOrder> {
 
@@ -506,7 +506,7 @@ opTime: Tue Sep 08 11:05:01 CST 2020
 
 opType: UPDATE
 
-modelClass: class com.jasper.oplog.test.springboot.model.OrderChange
+modelClass: class com.github.djbing85.test.springboot.model.OrderChange
 ```
 
 ### JsonDiffOpLogAOPInterceptor
@@ -528,7 +528,7 @@ opTime: Wed Sep 09 11:15:29 CST 2020
 
 opType: UPDATE
 
-modelClass: class com.jasper.oplog.test.springboot.model.OrderChange
+modelClass: class com.github.djbing85.test.springboot.model.OrderChange
 ```
 
 
@@ -545,7 +545,7 @@ modelClass: class com.jasper.oplog.test.springboot.model.OrderChange
 | operator   | 操作人       | [OpLogJoinPoint](#OpLogJoinPoint).operator                   |
 | pre        | 操作前值     | [OpLogJoinPoint](#OpLogJoinPoint)方法针对的BO实例, 参考[modelClass选择机制](#modelClass选择机制) |
 | post       | 操作后值     | [OpLogJoinPoint](#OpLogJoinPoint)方法针对的BO实例, 参考[modelClass选择机制](#modelClass选择机制) |
-| diff       | 差异         | 在com.jasper.oplog.aop.AbstructOpLogAOPInterceptor.getModelDiff(Class<BO>, Object, Object)方法中生成; 在[IOpLogHandler](#IOpLogHandler接口).handleDiff中输出 |
+| diff       | 差异         | 在com.github.djbing85.aop.AbstructOpLogAOPInterceptor.getModelDiff(Class<BO>, Object, Object)方法中生成; 在[IOpLogHandler](#IOpLogHandler接口).handleDiff中输出 |
 | opTime     | 操作时间     | java.util.Date实例                                           |
 | opType     | 操作类型     | 根据pre/post是否为null, 分为CREATE/UPDATE/DELETE三大类       |
 | modelClass | 操作类       | 操作日志的BO类, 参考[modelClass选择机制](#modelClass选择机制) |
@@ -695,7 +695,7 @@ diff:         Order:
             Discount: 20.00% --> 6.67%
 opTime: Tue Sep 08 11:06:20 CST 2020
 opType: UPDATE
-modelClass: class com.jasper.oplog.test.springboot.model.OrderChange
+modelClass: class com.github.djbing85.test.springboot.model.OrderChange
 ```
 
 在测试的输出结果中的diff部分, 我们可以看到, orderChange.order.totalPrice等等几个内部bean的变更被如实地记录了下来.
@@ -806,7 +806,7 @@ total.price=Total Price
 
 ### 运行WEB
 
-如在Eclipse中, 打开源码的com.jasper.oplog.test.springboot.OpLog4jApplication, 右键Run As --> 1 Java Application
+如在Eclipse中, 打开源码的com.github.djbing85.test.springboot.OpLog4jApplication, 右键Run As --> 1 Java Application
 
 访问<http://127.0.0.1:8080/i18nTest?lang=en_US> 
 
