@@ -20,19 +20,19 @@ import com.github.djbing85.model.DefaultOpLog;
 /**
  * @author djbing85@gmail.com
  * @since 2019-06-12
- * @param <BO> BUSINESS OBJECT
+ * @param BO BUSINESS OBJECT
  */
 public interface IOpLogHandler<BO> {
 
     /**
-     * Persist log 
-     * @param log
+     * Output the op-log 
+     * @param log the op-log 
      */
     void handleDiff(DefaultOpLog<BO> log);
 
     /**
      * Each BO should have it's corresponding class register here
-     * @return
+     * @return model class
      */
     Class<BO> getModelClass();
 }

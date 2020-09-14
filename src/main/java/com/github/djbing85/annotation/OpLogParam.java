@@ -22,10 +22,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Label a parameter in the method as a BO/POJO/MODEL.<br/>
- * This usually apply on methods like: <br/>
- *  <code>com.xxx.service.UserService.update(User u);</code><br/>
- * In this case, we add annotation as below:<br/>
+ * Label a parameter in the method as a BO/POJO/MODEL.<p>
+ * This usually apply on methods like: <p>
+ *  <code>com.xxx.service.UserService.update(User u);</code><p>
+ * In this case, we add annotation as below:<p>
  *  <code>com.xxx.service.UserService.update(@OpLogParam User u);</code>
  * @author djbing85@gmail.com
  * @since 2019-05-27
@@ -36,8 +36,9 @@ import java.lang.annotation.Target;
 public @interface OpLogParam {
     
     /**
-     * true : to use this BO parameter as pre-BO directly;<br/>
+     * true : to use this BO parameter as pre-BO directly;<p>
      * false: need to load from outer storage
+     * @return default false
      */
     boolean isLoaded() default false;
 }

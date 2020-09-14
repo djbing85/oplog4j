@@ -20,9 +20,9 @@ import com.github.djbing85.enums.OpLogSensitiveTypeEnum;
 public interface ISensitiveFieldMasker<BO> {
 
     /**
-     * @param modelClass
-     * @param value
-     * @param sensitiveTypeEnum
+     * @param modelClass the model class
+     * @param value the value to be masked
+     * @param sensitiveTypeEnum mask strategy
      * @return masked value
      */
     Object maskSensitiveValue(Class<BO> modelClass, Object value, OpLogSensitiveTypeEnum sensitiveTypeEnum);

@@ -68,13 +68,13 @@ import com.google.common.collect.Multimap;
  * Process all method annotated with OpLogJoinPoint, 
  *  get BO before and after, 
  *  then build an OpLog and pass it to corresponding 
- *  <b>self-defined</b> handler via BO.class<br/>
- * before --> pre-BO<br/>
- * after  --> post-BO<br/>
- * handler --> compare the difference<br/>
+ *  <b>self-defined</b> handler via BO.class<p>
+ * before --&gt; pre-BO<p>
+ * after  --&gt; post-BO<p>
+ * handler --&gt; compare the difference<p>
  * @author djbing85@gmail.com
- * @param <OpLog> DefaultOpLog
- * @param <BO> BUSINESS MODEL
+ * @param OpLog DefaultOpLog
+ * @param BO BUSINESS MODEL
  * @since 2019-05-28
  */
 @Aspect
@@ -105,9 +105,10 @@ public abstract class AbstractOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>
             });
     
     /**
-     * Get BO before method is invoked<br/>
-     * clone the BO, because a reference to the same object will be changed after method executed<br/>
-     * place the BO into cache for a later use<br/>
+     * Get BO before method is invoked<p>
+     * clone the BO, because a reference to the same 
+     *  object will be changed after method executed<p>
+     * place the BO into cache for a later use<p>
      * @param jp JoinPoint
      */
     @SuppressWarnings("unchecked")
@@ -140,10 +141,10 @@ public abstract class AbstractOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>
     }
     
     /**
-     * 1. Get pre BO from cache<br/>
-     * 2. Get post BO after method return<br/>
-     * 3. Compare two BO<br/>
-     * 4. Build OpLog, call handler upon corresponding BO.getClass()<br/>
+     * 1. Get pre BO from cache<p>
+     * 2. Get post BO after method return<p>
+     * 3. Compare two BO<p>
+     * 4. Build OpLog, call handler upon corresponding BO.getClass()<p>
      * 
      * @param jp JoinPoint
      * @param rvt method return
@@ -181,6 +182,7 @@ public abstract class AbstractOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>
      * @param jp JoinPoint
      * @param pre BO
      * @param post BO
+     * @throws OpLogException see e.getMessage() for more detail
      * @return DefaultOpLog
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -249,15 +251,15 @@ public abstract class AbstractOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>
     }
     
     /**
-     * Get the operator via JoinPoint annotation config<br/>
-     * Sample: <p/>
-     * <code>@OpLogJoinPoint(operator="user.userName")</code><br/>
-     * <code>public Boolean updateUserProfile(User user){...}</code><p/>
+     * Get the operator via JoinPoint annotation config<p>
+     * Sample: <p>
+     * <code>@OpLogJoinPoint(operator="user.userName")</code><p>
+     * <code>public Boolean updateUserProfile(User user){...}</code><p>
      * The userName is a field of arg <b>user</b>, 
      *  and a getter <b>getUserName()</b> should be defined<p/>
-     * Or: <p/>
-     * <code>@OpLogJoinPoint(operator="auditor")</code><br/>
-     * <code>public Boolean auditUser(Long userId, Integer auditStatus, String auditor){...}</code><p/>
+     * Or: <p>
+     * <code>@OpLogJoinPoint(operator="auditor")</code><p>
+     * <code>public Boolean auditUser(Long userId, Integer auditStatus, String auditor){...}</code><p>
      * Will return the argument value of [auditor]
      * 
      * @param jp JoinPoint
@@ -409,7 +411,7 @@ public abstract class AbstractOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>
     
     /**
      * Call handler(s) to persist into outer storage, or output log etc.
-     * @param log
+     * @param log the op-log
      */
     protected void handleDiff(DefaultOpLog<BO> log) {
         Class<BO> clazz = null;
@@ -429,14 +431,13 @@ public abstract class AbstractOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>
     }
 
     /**
-     * Get the difference between two BO. <br/>
+     * Get the difference between two BO. <p>
      * Override this method to create the styles if you like
      * @param modelClass BO class
      * @param pre BO before method proceed
      * @param post BO after method proceed
-     * @return difference like:<br/> 
-     * diff: user name: jim --> lily<br/>
-     * balance 10000 --> 0<br/>
+     * @throws OpLogException see e.getMessage() for more detail
+     * @return difference between two BO, detail is implemented in sub-class
      */
     protected abstract Object getModelDiff(
             Class<BO> modelClass, Object pre, Object post)

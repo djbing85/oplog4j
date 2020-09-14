@@ -31,7 +31,9 @@ import java.lang.annotation.Target;
 @Target({ ElementType.PARAMETER })
 public @interface OpLogID {
     
-    /**  */
+    /** 
+     * @return default 0, don't change the value
+     */
     int order() default 0;
     
 }

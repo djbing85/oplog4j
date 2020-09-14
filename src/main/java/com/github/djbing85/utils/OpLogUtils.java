@@ -46,17 +46,19 @@ public class OpLogUtils {
     protected static final Logger LOG = Logger.getLogger(OpLogUtils.class);
 
     /**
-     * To compose an operation difference, we need PRE and POST Business Object(BO) <br/>
+     * To compose an operation difference, we need PRE and POST Business Object(BO) <p>
      * This method gets the PRE and POST value from DAO, 
      *  if user specified, we will also use param BO directly 
      * @param applicationContext spring applicationContext
+     * @param jp the join point
      * @param modelClass BO model class
      * @param keyArgs id param(s) or model argument
      * @param idParamMap id Parameter
      * @param boParamToLoadList Business Object Parameter, to load from DAO
      * @param boParamList Business Object Parameter, in which, annotated with <Code>OpLogParam(isLoaded = true)</code>
+     * @param isPre true means pre-BO, false means post-BO
      * @return latest values of the Business Object 
-     * @throws OpLogException
+     * @throws OpLogException see e.getMessage() for more information
      */
     public synchronized static Object loadObject(
             ApplicationContext applicationContext, 
@@ -236,6 +238,13 @@ public class OpLogUtils {
         }
     }
     
+    /**
+     * Invoke fieldName's getter of the param o
+     * @param o object instance
+     * @param fieldName o's field
+     * @return whatever the getter return
+     * @throws OpLogException see e.getMessage() for more information
+     */
     public synchronized static Object invokeGet(Object o, String fieldName) throws OpLogException {
         try {
             Method method = makeGetMethod(o.getClass(), fieldName);
@@ -265,11 +274,11 @@ public class OpLogUtils {
     }
     
     /**
-     * get property recrutively
-     * @param operatorPropertiesIterator 
-     * @param arg
-     * @return 
-     * @throws OpLogException 
+     * Get property recursively
+     * @param operatorPropertiesIterator string array
+     * @param arg parameter instance
+     * @return a property the operatorPropertiesIterator point to from arg
+     * @throws OpLogException see e.getMessage() for more information
      */
     public synchronized static Object getPropertyRecrutively(
             Iterator<String> operatorPropertiesIterator, 

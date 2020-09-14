@@ -39,7 +39,7 @@ import com.google.common.collect.Multimap;
 
 /**
  * @author djbing85@gmail.com
- * @param <BO>
+ * @param BO the Business Object
  * @since 2019-05-10
  */
 @Aspect
@@ -64,7 +64,7 @@ public class DefaultOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>, BO>
      * @param modelClass bean annotated by OpLogModel
      * @param obj: bean instance
      * @return translate the obj base on the annotation
-     * @throws OpLogException
+     * @throws OpLogException see e.getMessage() for more information
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     protected Object transferSingleModel(Class<BO> modelClass, Object obj) throws OpLogException {
@@ -160,14 +160,12 @@ public class DefaultOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>, BO>
     }
     
     /** 
+     * get the difference between two param
      * @param modelClass BO class
      * @param pre value before method proceed
      * @param post value after method proceed
-     * get the difference between two param<br/>
-     * @return
-     * user name: jim --> lily<br/>
-     * balance 10000 --> 0<br/>
-     * override this method to create the styles you like
+     * @return a string like "user name: jim --&gt; lily<p>
+     * balance 10000 --&gt; 0"
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     protected Object getModelDiff(Class<BO> modelClass, Object pre, Object post) 

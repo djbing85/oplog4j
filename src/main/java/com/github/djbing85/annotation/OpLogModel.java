@@ -22,7 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation label on a BO class.<br/>
+ * Annotation label on a BO class.<p>
  * For example:
      com.xxx.Model.User is the BO class, 
          usually this is where we place the annotation: "@OpLogModel" on
@@ -39,16 +39,18 @@ public @interface OpLogModel {
 
     /**
      * DAO bean Id
+     * @return DAO bean id string
      */
     String daoBeanId();
     
     /**
-     * Method name that return a BO model by id. <br/>
-     * Be aware that this method must be the same(equals) with the method name inside the DAO, <br/>
-     *  and should be unique in the DAO. <br/>
-     * If no, please create a unique one. <br/>
+     * Method name that return a BO model by id. <p>
+     * Be aware that this method must be the same(equals) with the method name inside the DAO, <p>
+     *  and should be unique in the DAO. <p>
+     * If no, please create a unique one. <p>
      * For example: com.xxx.dao.UserDao.getById(Long id), 
      *  the method name should be "getById"
+     * @return DAO 'getById' method
      */
     String method();
     

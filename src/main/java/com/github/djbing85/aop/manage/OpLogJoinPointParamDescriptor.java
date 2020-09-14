@@ -60,9 +60,9 @@ public class OpLogJoinPointParamDescriptor implements Serializable {
     
     /**
      * parse the joinPoint parameters
-     * @param joinPoint
-     * @param isPre
-     * @throws OpLogException
+     * @param joinPoint the join point
+     * @param isPre true means is intercepted by @Before, false: @After
+     * @throws OpLogException see e.getMessage() for more detail
      */
     public OpLogJoinPointParamDescriptor(JoinPoint joinPoint, boolean isPre) throws OpLogException {
         this.joinPoint = joinPoint;

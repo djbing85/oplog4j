@@ -74,9 +74,9 @@ public class OpLogJoinPointManager<BO> {
     }
 
     /**
-     * get BO before or after the given JoinPoint
-     * @return a BO
-     * @throws OpLogException
+     * Get BO before or after the given JoinPoint
+     * @return a BO instance
+     * @throws OpLogException see e.getMessage() for more detail
      */
     @SuppressWarnings("unchecked")
     public BO getOpLogBusinessObject() throws OpLogException {
@@ -133,18 +133,18 @@ public class OpLogJoinPointManager<BO> {
     }
     
     /**
-     * Get BO class in below order: <br/>
+     * Get BO class in below order: <p>
      * 1. Get from method annotated by <b>OpLogJoinPoint</b>, 
-     *  usually methods like <code>updateXxxById(@OpLogID Long id, String xxx)</code> should have annotation OpLogJoinPoint with property: modelClass<br/>
+     *  usually methods like <code>updateXxxById(@OpLogID Long id, String xxx)</code> should have annotation OpLogJoinPoint with property: modelClass<p>
      * 
      * 2. Get from return, methods like <code>BO insertUser(String name, String age)</code>, 
-     * If OpLogJoinPoint.useReturnValue == true, will try to use BO.class <br/>
-     * If type mismatch, throw OpLogException<br/>
+     * If OpLogJoinPoint.useReturnValue == true, will try to use BO.class <p>
+     * If type mismatch, throw OpLogException<p>
      * 
      * 3. Get from param, check parameters annotated with OpLogParam, 
-     *  double check annotation <b>OpLogModel</b> upon the param's class<br/>
+     *  double check annotation <b>OpLogModel</b> upon the param's class<p>
      * 
-     * If no param around the method annotated by OpLogModel, throw OpLogException <br/>
+     * If no param around the method annotated by OpLogModel, throw OpLogException <p>
      * If multiple args annotated by OpLogModel, get the first one, 
      *  in this case, if user wants to generate op-log for the non-first-param, 
      *  please try to use <code>OpLogJoinPoint.modelClass</code> or <code>OpLogParam</code>

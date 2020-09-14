@@ -20,10 +20,11 @@ import com.github.djbing85.enums.OpLogSensitiveTypeEnum;
 public class DefaultSensitiveFieldMasker<BO> implements ISensitiveFieldMasker<BO> {
 
     /**
-     * Only String/Long/Integer fields are supported<br>
-     * @param value
-     * @param OpLogSensitiveTypeEnum
-     * @return replace half or more chars on the given value to * base on the OpLogSensitiveTypeEnum
+     * Only String/Long/Integer fields are supported<p>
+     * @param modelClass the model class
+     * @param value the value to be masked
+     * @param sensitiveTypeEnum mask strategy
+     * @return replace half or more chars on the given value to * base on the 'sensitiveTypeEnum' strategy
      */
     @Override
     public Object maskSensitiveValue(Class<BO> modelClass, Object value, OpLogSensitiveTypeEnum sensitiveTypeEnum) {

@@ -45,7 +45,7 @@ import com.github.djbing85.utils.OpLogUtils;
 
 /**
  * @author djbing85@gmail.com
- * @param <BO>
+ * @param BO the Business Object
  * @since 2020-09-08
  */
 @Aspect
@@ -59,11 +59,13 @@ public class JsonDiffOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>, BO>
      *  in those cases we need this method to generate opLog;
      * @param modelClass bean annotated by OpLogModel
      * @param obj: bean instance
+     * @param isPre: true means pre-BO, false means post-BO
      * @return translate the obj base on the annotation
-     * @throws OpLogException
+     * @throws OpLogException see e.getMessage() for more information
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    protected List<DiffModel> transferSingleModel(Class<BO> modelClass, Object obj, boolean isFrom) throws OpLogException {
+    protected List<DiffModel> transferSingleModel(Class<BO> modelClass, 
+            Object obj, boolean isPre) throws OpLogException {
         List<DiffModel> diffModelList = new ArrayList<>();
         DiffModel diffModel;
         OpLogField opLogFieldAnnotation = null;
@@ -128,7 +130,7 @@ public class JsonDiffOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>, BO>
                 if(opLogModelAnno != null) {
                     List<DiffModel> subModelDiffList = null; 
                     if(value != null) {
-                        Object objDiff = this.transferSingleModel(subModelClz, value, isFrom);
+                        Object objDiff = this.transferSingleModel(subModelClz, value, isPre);
                         if(objDiff != null) {
                             subModelDiffList = (List<DiffModel>)objDiff;
                         }
@@ -146,7 +148,7 @@ public class JsonDiffOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>, BO>
 //                ParameterizedType type = (ParameterizedType) field.getGenericType();
 //                Class<?> actualTypeArgument = (Class<?>)type.getActualTypeArguments()[0];
                 
-                if(isFrom) {
+                if(isPre) {
                     diffModel.setFrom(value == null? null: value.toString());
                 } else {
                     
@@ -160,14 +162,11 @@ public class JsonDiffOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>, BO>
     }
     
     /** 
+     * Get the difference between two param
      * @param modelClass BO class
      * @param pre value before method proceed
      * @param post value after method proceed
-     * get the difference between two param<br/>
-     * @return
-     * user name: jim --> lily<br/>
-     * balance 10000 --> 0<br/>
-     * override this method to create the styles you like
+     * @return {"fieldName":"user name", "pre": "jim", "post":"lily"}
      */
     @SuppressWarnings("unchecked")
     protected List<DiffModel> getModelDiff(Class<BO> modelClass, Object pre, Object post) 
@@ -404,16 +403,11 @@ public class JsonDiffOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>, BO>
                     continue;
                 }
 
-//                sb.append(valuePre).append(" --> ").append(valuePost).append("\n");
                 diffModel.setFrom(JSONObject.toJSONString(valuePre));
                 diffModel.setTo(JSONObject.toJSONString(valuePost));
                 diffModelList.add(diffModel);
             }
         }
-        
-//        if(sb.length() > 1 && sb.toString().endsWith("\n")) {
-//            return sb.substring(0, sb.length() - 1);
-//        }
 
         return diffModelList;
     }
