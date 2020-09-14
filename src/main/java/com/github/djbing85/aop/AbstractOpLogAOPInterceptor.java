@@ -154,7 +154,7 @@ public abstract class AbstractOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>
         try {
             Map<String, Object> map = cache.get(jp.hashCode());
             if(map == null) {
-                LOG.error("could not find join point preVal from cache: " + jp.hashCode());
+                LOG.error("could not find join point preVal(not even null!) from cache: " + jp.hashCode());
                 return;
             }
             BO objPre = null;
@@ -285,7 +285,8 @@ public abstract class AbstractOpLogAOPInterceptor<OpLog extends DefaultOpLog<BO>
             String argName = operatorPropertiesIterator.next();
             arg = paramNameArgMap.get(argName);
             if(arg != null) {
-                return (String)OpLogUtils.getPropertyRecrutively(operatorPropertiesIterator, arg);
+                Object obj = OpLogUtils.getPropertyRecrutively(operatorPropertiesIterator, arg);
+                return obj == null? null: obj.toString();
             }
         }
         return null;

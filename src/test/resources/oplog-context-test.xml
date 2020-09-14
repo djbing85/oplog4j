@@ -20,8 +20,11 @@
     
     <bean id="userOpLogHandler" class="com.github.djbing85.test.xml.aop.handler.UserOpLogHandler"/>
     
+    <bean id="sensitiveOpLogHandler" class="com.github.djbing85.test.xml.aop.handler.SensitiveOpLogHandler"/>
+    
     <util:list id="opLogHandlers">
        <ref bean="userOpLogHandler" />
+       <ref bean="sensitiveOpLogHandler" />
     </util:list>
     
     <bean id="defaultOpLogAOPInterceptor" class="com.github.djbing85.aop.DefaultOpLogAOPInterceptor">

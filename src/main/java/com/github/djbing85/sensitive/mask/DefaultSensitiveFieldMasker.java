@@ -38,7 +38,7 @@ public class DefaultSensitiveFieldMasker<BO> implements ISensitiveFieldMasker<BO
                 ) {
             val = value.toString();
             if(val.length() == 0) {
-                return null;
+                return val;
             }
         }
         else {

@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.springframework.context.ApplicationContext;
@@ -147,7 +148,7 @@ public class OpLogUtils {
             }
         }
         
-        throw new OpLogException("please check your configuration to load model from DAO.");
+        throw new OpLogException("please check your configuration to load model from DAO/Service.");
     }
     
     private static void validateParams(ApplicationContext applicationContext,
@@ -163,17 +164,17 @@ public class OpLogUtils {
         if(idParamMap != null) {
             if(idParamMap.size() > 0) {
                 if(boParamToLoadList != null && boParamToLoadList.size() > 0) {
-                    msg = "OpLogID or OpLogModel should be apply only one: " + jp.getSignature().getName();
+                    msg = "OpLogID or OpLogModel should be apply only one: " + jp.toLongString();
                     LOG.error(msg);
                     throw new OpLogException(msg);
                 }
                 if(boParamList != null && boParamList.size() > 0) {
-                    msg = "OpLogID or OpLogModel should be apply only one: " + jp.getSignature().getName();
+                    msg = "OpLogID or OpLogModel should be apply only one: " + jp.toLongString();
                     LOG.error(msg);
                     throw new OpLogException(msg);
                 }
                 if(modelClass.equals(Void.class)) {
-                    msg = "please specify OpLogJoinPoint.modelClass upon: " + jp.getSignature().getName();
+                    msg = "please specify OpLogJoinPoint.modelClass upon: " + jp.toLongString();
                     LOG.error(msg);
                     throw new OpLogException(msg);
                 }
@@ -182,7 +183,7 @@ public class OpLogUtils {
                 Set<Integer> idOrderSet = idParamMap.keySet();
                 for(Integer order: idOrderSet) {
                     if(order + 1 > idParamSize) {
-                        msg = "OpLogID.order [" + order + "] is invalid, please check on method: " + jp.getSignature().getName();
+                        msg = "OpLogID.order [" + order + "] is invalid, please check on method: " + jp.toLongString();
                         LOG.error(msg);
                         throw new OpLogException(msg);
                     }
@@ -191,24 +192,30 @@ public class OpLogUtils {
         }
         if(boParamToLoadList != null) {
             if(boParamToLoadList.size() > 1) {
-                msg = "should have but only one parameter annotated by OpLogParam: " + jp.getSignature().getName();
+                msg = "should have but only one parameter annotated by OpLogParam: " + jp.toLongString();
                 LOG.error(msg);
                 throw new OpLogException(msg);
             }
         }
         if(boParamList != null) {
             if(boParamList.size() > 1) {
-                msg = "should have but only one parameter annotated with OpLogParam: " + jp.getSignature().getName();
+                msg = "should have but only one parameter annotated with OpLogParam: " + jp.toLongString();
                 LOG.error(msg);
                 throw new OpLogException(msg);
             }
+        }
+        if(CollectionUtils.isEmpty(keyArgs) && CollectionUtils.isEmpty(boParamList)) {
+            msg = "please check around method: " + jp.getSignature().toLongString() + 
+                    " whether 1: specify an OpLogID and modelClass or, 2: using OpLogModel but the ID field is null";
+            LOG.error(msg);
+            throw new OpLogException(msg);
         }
         
         //a BO model must be annotated by OpLogModel correctly, otherwise there is no way to load the model by DAO 
         @SuppressWarnings("unchecked")
         Annotation anno = modelClass.getAnnotation(OpLogModel.class);
         if(anno == null) {
-            msg = "target model class should be annotated with OpLogModel. method: " + jp.getSignature().getName();
+            msg = "target model class should be annotated with OpLogModel. method: " + jp.toLongString();
             LOG.error(msg);
             throw new OpLogException(msg);
         }
@@ -216,14 +223,14 @@ public class OpLogUtils {
         OpLogModel OpLogModelAnno = (OpLogModel)anno;
         String daoBeanId = OpLogModelAnno.daoBeanId();
         if(StringUtils.isEmpty(daoBeanId)) {
-            msg = "daoBeanId not found from OpLogModel around method: " + jp.getSignature().getName();
+            msg = "daoBeanId not found from OpLogModel around method: " + jp.toLongString();
             LOG.error(msg);
             throw new OpLogException(msg);
         }
         Object dao = applicationContext.getBean(daoBeanId);
         
         if(dao == null) {
-            msg = "daoBeanId: " + daoBeanId + " bean not found around method: " + jp.getSignature().getName();
+            msg = "daoBeanId: " + daoBeanId + " bean not found around method: " + jp.toLongString();
             LOG.error(msg);
             throw new OpLogException(msg);
         }

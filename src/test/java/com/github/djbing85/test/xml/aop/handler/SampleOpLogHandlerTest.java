@@ -3,9 +3,9 @@ package com.github.djbing85.test.xml.aop.handler;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 import com.github.djbing85.test.xml.BaseTest;
 import com.github.djbing85.test.xml.dao.OpLogSampleDao;
