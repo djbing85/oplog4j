@@ -8,7 +8,7 @@
     
 	<groupId>com.github.djbing85</groupId>
 	<artifactId>oplog4j</artifactId>
-	<version>0.0.1-RC02</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<description>a common oplog generator intergrated with spring</description>
 	<url>https://github.com/djbing85/oplog4j</url>
     

@@ -125,6 +125,44 @@ If your project coding style comply the MVC structure, it could be very convenie
 
 OpLog4j use AOP interceptor: @Before and @After to generate operation log
 
+
+
+## Introduce Dependencies
+
+### Maven Dependency
+
+Refer to [Maven Center Repo][Maven Center Repo], import MAVEN dependency as below:
+
+[Maven Center Repo]: https://search.maven.org/artifact/com.github.djbing85/oplog4j/0.0.1-RC01/jar	"Maven Center Repo"
+
+```xml
+<dependency>
+  <groupId>com.github.djbing85</groupId>
+  <artifactId>oplog4j</artifactId>
+  <version>0.0.1-RC01</version>
+</dependency>
+```
+
+
+
+### Gradle Groovy
+
+```groovy
+implementation 'com.github.djbing85:oplog4j:0.0.1-RC01'
+```
+
+
+
+### Gradle Kotlin 
+
+```kotlin
+implementation("com.github.djbing85:oplog4j:0.0.1-RC01")
+```
+
+
+
+## Configuration Overview
+
 All developer needs to do is to go through some simple configuration listed below: 
 
 | Config Item                         | Description                                                  | Reference                                                    |

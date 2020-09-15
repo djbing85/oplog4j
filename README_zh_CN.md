@@ -126,7 +126,43 @@ OpLog4j通过AOP拦截器的before和after方法实现生成操作日志的功�
 
 
 
-开发者所需要做的, 仅仅是通过一些简单配置, 就可以快速实现操作日志的功能
+## 引入依赖
+
+### Maven Dependency
+
+参考 [Maven Center Repo][Maven Center Repo], 如下引入MAVEN依赖
+
+[Maven Center Repo]: https://search.maven.org/artifact/com.github.djbing85/oplog4j/0.0.1-RC01/jar	"Maven Center Repo"
+
+```xml
+<dependency>
+  <groupId>com.github.djbing85</groupId>
+  <artifactId>oplog4j</artifactId>
+  <version>0.0.1-RC01</version>
+</dependency>
+```
+
+
+
+### Gradle Groovy
+
+```groovy
+implementation 'com.github.djbing85:oplog4j:0.0.1-RC01'
+```
+
+
+
+### Gradle Kotlin 
+
+```kotlin
+implementation("com.github.djbing85:oplog4j:0.0.1-RC01")
+```
+
+
+
+## 配置总览
+
+之后开发者所需要做的, 仅仅是通过一些简单配置, 就可以快速实现操作日志的功能
 
 | 配置项目              | 说明                                                         | 类                                                           |
 | --------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
